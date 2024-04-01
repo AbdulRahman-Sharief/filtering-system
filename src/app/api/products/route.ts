@@ -12,7 +12,7 @@ class Filter {
   add(key: string, operator: string, value: string | number) {
     const filter = this.filters.get(key) || [];
     filter.push(
-      `${key} ${operator} ${typeof value === "number" ? value : `"${value}"`}`
+      `${key} ${operator} ${typeof value === "number" ? value : `"${value}"`}`,
     );
     this.filters.set(key, filter);
   }
@@ -34,18 +34,19 @@ class Filter {
 const AVG_PRODUCT_PRICE = 25;
 const MAX_PRODUCT_PRICE = 50;
 export const POST = async (req: NextRequest) => {
- try {
+  try {
     const body = await req.json();
 
     const { sort, color, price, size } = ProductFilterValidator.parse(
-      body.filter
+      body.filter,
     );
     const filter = new Filter();
-if(color.length > 0) color.forEach((color) => filter.add("color", "=", color));
-else if(color.length === 0 ) filter.addRaw("color",'color = ""')
-    
-if(size.length > 0 )size.forEach((size) => filter.add("size", "=", size));
-else if(size.length === 0) filter.addRaw("size",'size = ""')
+    if (color.length > 0)
+      color.forEach((color) => filter.add("color", "=", color));
+    else if (color.length === 0) filter.addRaw("color", 'color = ""');
+
+    if (size.length > 0) size.forEach((size) => filter.add("size", "=", size));
+    else if (size.length === 0) filter.addRaw("size", 'size = ""');
     filter.addRaw("price", `price >= ${price[0]} AND price <= ${price[1]}`);
     const products = await db.query({
       topK: 12,
@@ -55,18 +56,18 @@ else if(size.length === 0) filter.addRaw("size",'size = ""')
         sort === "none"
           ? AVG_PRODUCT_PRICE
           : sort === "price-asc"
-          ? 0
-          : MAX_PRODUCT_PRICE,
+            ? 0
+            : MAX_PRODUCT_PRICE,
       ],
       includeMetadata: true,
       filter: filter.hasFilter() ? filter.get() : undefined,
     });
     return new Response(JSON.stringify(products));
- } catch (error) {
-    console.error(error)
+  } catch (error) {
+    console.error(error);
 
-    return new Response(JSON.stringify({message:"Internal Server Error"}),{
-        status:500
-    })
- }
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+      status: 500,
+    });
+  }
 };
