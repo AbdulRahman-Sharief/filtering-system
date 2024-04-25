@@ -1,4 +1,4 @@
-import { Product } from "@/db";
+import type { Product } from "@/db";
 
 const Product = ({ product }: { product: Product }) => {
   return (
