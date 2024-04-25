@@ -1,6 +1,7 @@
 # Full-Stack Filtering System with Next.js, Tailwind, and Upstash
 
-<video src="https://drive.google.com/file/d/1WusanZqn_KvSdAgjBAPkr5TIXiUtYgAj/view?usp=sharing" autoplay></video>
+
+<video src="https://drive.google.com/file/d/1WusanZqn_KvSdAgjBAPkr5TIXiUtYgAj/view?usp=sharing" width="320" height="240" controls></video>
 
 ## Overview
 
